@@ -1,49 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My First Web Page – From Flutter to Web</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPA Revolution</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: #0f0f0f;
-      color: #e0e0e0;
-      margin: 0;
-      padding: 2rem;
-      text-align: center;
-    }
-    h1 { color: #00d4ff; }
-    .card {
-      background: #1e1e1e;
-      border-radius: 12px;
-      padding: 2rem;
-      max-width: 600px;
-      margin: 2rem auto;
-      box-shadow: 0 10px 30px rgba(0,212,255,0.1);
-    }
-    button {
-      background: #00d4ff;
-      color: black;
-      border: none;
-      padding: 1rem 2rem;
-      border-radius: 999px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    button:hover { transform: scale(1.05); background: #00b8ff; }
+    body { transition: all 0.6s; }
+    .democrat { background: linear-gradient(135deg, #002868, #BF0A30); }
+    .communist { background: linear-gradient(135deg, #C8102E, #000000); }
+    .anthem-btn { transition: transform 0.3s; }
+    .anthem-btn:hover { transform: scale(1.15); }
   </style>
 </head>
-<body>
-  <div class="card">
-    <h1>Yo from the web side</h1>
-    <p>Flutter survivor reporting in. Play Store tried to end me, but here I am.</p>
-    <button onclick="alert('Fuck yeah, first click! 🚀')">Click me</button>
+<body class="democrat text-white min-h-screen font-sans">
+
+  <!-- SELECTION SCREEN -->
+  <div id="selection" class="flex items-center justify-center min-h-screen p-8">
+    <div class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
+      
+      <!-- DEMOCRAT -->
+      <div onclick="chooseIdeology('democrat')" 
+           class="bg-white/10 backdrop-blur-lg rounded-3xl p-10 text-center cursor-pointer hover:scale-105 transition-transform border-4 border-white/30">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Bald_Eagle_Portrait.jpg/800px-Bald_Eagle_Portrait.jpg" 
+             class="mx-auto rounded-2xl shadow-2xl mb-6 w-64 h-64 object-cover">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Uncle_Sam_(pointing_finger).jpg/800px-Uncle_Sam_(pointing_finger).jpg" 
+             class="mx-auto rounded-2xl shadow-2xl -mt-12 w-48 h-48 object-cover border-8 border-white">
+        <h1 class="text-6xl font-black mt-8 tracking-tighter">DEMOCRAT</h1>
+        <p class="text-2xl mt-2 opacity-80">Uncle Sam wants YOU to calculate your GPA 🇺🇸🦅</p>
+      </div>
+
+      <!-- COMMUNIST -->
+      <div onclick="chooseIdeology('communist')" 
+           class="bg-white/10 backdrop-blur-lg rounded-3xl p-10 text-center cursor-pointer hover:scale-105 transition-transform border-4 border-white/30">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Hammer_and_sickle_red_on_transparent.svg/800px-Hammer_and_sickle_red_on_transparent.svg.png" 
+             class="mx-auto rounded-2xl shadow-2xl mb-6 w-64 h-64 object-contain bg-white/20 p-8">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Vladimir_Lenin_(1918).jpg/800px-Vladimir_Lenin_(1918).jpg" 
+             class="mx-auto rounded-2xl shadow-2xl -mt-12 w-48 h-48 object-cover border-8 border-white">
+        <h1 class="text-6xl font-black mt-8 tracking-tighter">COMMUNIST</h1>
+        <p class="text-2xl mt-2 opacity-80">Comrade, the revolution needs your GPA 📕🔨</p>
+      </div>
+    </div>
   </div>
 
+  <!-- CALCULATOR SCREEN -->
+  <div id="calculator" class="hidden min-h-screen p-8">
+    <div class="max-w-3xl mx-auto">
+      <!-- HEADER -->
+      <div class="flex items-center justify-between mb-10">
+        <div onclick="reset()" class="flex items-center gap-3 cursor-pointer">
+          <i class="fas fa-arrow-left text-3xl"></i>
+          <span class="text-2xl font-bold">Back to ideology</span>
+        </div>
+        
+        <div id="header" class="text-center">
+          <h1 id="title" class="text-6xl font-black tracking-tighter"></h1>
+          <p id="subtitle" class="text-2xl opacity-80"></p>
+        </div>
+
+        <button onclick="toggleMusic()" id="musicBtn"
+                class="anthem-btn bg-white/20 hover:bg-white/30 px-6 py-3 rounded-2xl flex items-center gap-3 text-xl font-bold">
+          <i class="fas fa-music"></i>
+          <span id="musicLabel">Play Anthem</span>
+        </button>
+      </div>
+
+      <!-- GPA DISPLAY -->
+      <div class="bg-black/30 backdrop-blur-xl rounded-3xl p-10 mb-10 text-center">
+        <p class="uppercase text-sm tracking-widest opacity-70">Your Current</p>
+        <div id="gpa" class="text-[10rem] leading-none font-black text-white">0.00</div>
+        <p id="gpaText" class="text-3xl font-bold mt-2"></p>
+      </div>
+
+      <!-- ADD COURSE -->
+      <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-8 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <input id="courseName" type="text" placeholder="Course name (e.g. Math 101)" 
+                 class="md:col-span-5 bg-transparent border-b-2 border-white/50 focus:border-white text-xl py-3 outline-none">
+          
+          <select id="grade" class="md:col-span-3 bg-transparent border-b-2 border-white/50 text-xl py-3 outline-none">
+            <option value="4.0">A (4.0)</option>
+            <option value="3.7">A- (3.7)</option>
+            <option value="3.3">B+ (3.3)</option>
+            <option value="3.0">B (3.0)</option>
+            <option value="2.7">B- (2.7)</option>
+            <option value="2.3">C+ (2.3)</option>
+            <option value="2.0">C (2.0)</option>
+            <option value="1.7">C- (1.7)</option>
+            <option value="1.0">D (1.0)</option>
+            <option value="0.0">F (0.0)</option>
+          </select>
+          
+          <input id="credits" type="number" value="3" min="1" step="0.5" placeholder="Credits"
+                 class="md:col-span-2 bg-transparent border-b-2 border-white/50 text-xl py-3 outline-none">
+          
+          <button onclick="addCourse()" 
+                  class="md:col-span-2 bg-white text-black font-bold text-xl py-3 rounded-2xl hover:bg-yellow-400 transition">
+            ADD
+          </button>
+        </div>
+      </div>
+
+      <!-- COURSE LIST -->
+      <div id="courseList" class="space-y-4 mb-10"></div>
+
+      <div class="text-center text-sm opacity-60">
+        Made with love (and a bit of ideology) by Grok • Public domain assets
+      </div>
+    </div>
+  </div>
+
+  <!-- AUDIO -->
+  <audio id="anthem" loop></audio>
+
   <script>
-    console.log("If you see this → dev tools work. Nice.");
+    let currentIdeology = '';
+    let courses = [];
+
+    function chooseIdeology(ideology) {
+      currentIdeology = ideology;
+      document.getElementById('selection').classList.add('hidden');
+      document.getElementById('calculator').classList.remove('hidden');
+      
+      const body = document.body;
+      body.classList.remove('democrat', 'communist');
+      body.classList.add(ideology);
+      
+      if (ideology === 'democrat') {
+        document.getElementById('title').innerHTML = 'LIBERTY GPA <span class="text-yellow-400">🦅</span>';
+        document.getElementById('subtitle').textContent = 'Uncle Sam is proud of you';
+        document.getElementById('anthem').src = 'https://upload.wikimedia.org/wikipedia/commons/1/1f/%22The_Star-Spangled_Banner%22_performed_by_the_United_States_Navy_Band.mp3';
+      } else {
+        document.getElementById('title').innerHTML = 'PROLETARIAN GPA <span class="text-yellow-400">🔨</span>';
+        document.getElementById('subtitle').textContent = 'Comrade, seize the means of calculation';
+        document.getElementById('anthem').src = 'https://upload.wikimedia.org/wikipedia/commons/b/ba/The_Internationale(English)(Lyrics).ogg';
+      }
+      
+      updateGPA();
+    }
+
+    function addCourse() {
+      const name = document.getElementById('courseName').value.trim() || 'Unnamed Course';
+      const grade = parseFloat(document.getElementById('grade').value);
+      const credits = parseFloat(document.getElementById('credits').value);
+      
+      courses.push({ name, grade, credits });
+      renderCourses();
+      updateGPA();
+      
+      // clear inputs
+      document.getElementById('courseName').value = '';
+    }
+
+    function removeCourse(index) {
+      courses.splice(index, 1);
+      renderCourses();
+      updateGPA();
+    }
+
+    function renderCourses() {
+      const container = document.getElementById('courseList');
+      container.innerHTML = '';
+      
+      courses.forEach((course, i) => {
+        const div = document.createElement('div');
+        div.className = 'bg-white/10 backdrop-blur-xl rounded-2xl p-6 flex justify-between items-center';
+        div.innerHTML = `
+          <div>
+            <div class="font-bold text-xl">${course.name}</div>
+            <div class="text-3xl font-black text-yellow-400">${course.grade} × ${course.credits}</div>
+          </div>
+          <button onclick="removeCourse(${i})" class="text-red-400 hover:text-red-500 text-4xl leading-none">×</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function updateGPA() {
+      if (courses.length === 0) {
+        document.getElementById('gpa').textContent = '0.00';
+        document.getElementById('gpaText').textContent = currentIdeology === 'democrat' ? 'Be a patriot and add courses!' : 'Workers of the world, unite... and add courses!';
+        return;
+      }
+      
+      let totalPoints = 0;
+      let totalCredits = 0;
+      
+      courses.forEach(c => {
+        totalPoints += c.grade * c.credits;
+        totalCredits += c.credits;
+      });
+      
+      const gpa = (totalPoints / totalCredits).toFixed(2);
+      document.getElementById('gpa').textContent = gpa;
+      
+      let message = '';
+      if (currentIdeology === 'democrat') {
+        if (gpa >= 3.8) message = 'TRUE AMERICAN HERO 🦅🇺🇸';
+        else if (gpa >= 3.0) message = 'Land of the Free, Home of the B+';
+        else message = 'Better luck next term, patriot!';
+      } else {
+        if (gpa >= 3.8) message = 'EXEMPLARY COMRADE 🎖️';
+        else if (gpa >= 3.0) message = 'The people approve';
+        else message = 'Class struggle continues...';
+      }
+      document.getElementById('gpaText').textContent = message;
+    }
+
+    function toggleMusic() {
+      const audio = document.getElementById('anthem');
+      if (audio.paused) {
+        audio.play();
+        document.getElementById('musicLabel').textContent = 'Pause Anthem';
+      } else {
+        audio.pause();
+        document.getElementById('musicLabel').textContent = 'Play Anthem';
+      }
+    }
+
+    function reset() {
+      location.reload();
+    }
+
+    // Tailwind script already loaded
   </script>
 </body>
 </html>
