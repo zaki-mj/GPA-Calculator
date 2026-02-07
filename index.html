@@ -3,115 +3,105 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GPA Revolution</title>
+  <title>GPA Calculator</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    body { transition: all 0.6s; }
-    .democrat { background: linear-gradient(135deg, #002868, #BF0A30); }
-    .communist { background: linear-gradient(135deg, #C8102E, #000000); }
-    .anthem-btn { transition: transform 0.3s; }
-    .anthem-btn:hover { transform: scale(1.15); }
+    body { transition: background 0.6s ease; }
+    .democrat { background: linear-gradient(135deg, #002868 0%, #BF0A30 100%); }
+    .communist { background: linear-gradient(135deg, #C8102E 0%, #000000 100%); }
+    input:focus { border-color: white; }
+    button:hover { transform: translateY(-2px); }
   </style>
 </head>
-<body class="democrat text-white min-h-screen font-sans">
+<body class="democrat text-white min-h-screen font-sans antialiased">
 
-  <!-- SELECTION SCREEN -->
-  <div id="selection" class="flex items-center justify-center min-h-screen p-8">
-    <div class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
-      
-      <!-- DEMOCRAT -->
+  <!-- Selection Screen -->
+  <div id="selection" class="flex items-center justify-center min-h-screen px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl w-full">
+      <!-- Democrat -->
       <div onclick="chooseIdeology('democrat')" 
-           class="bg-white/10 backdrop-blur-lg rounded-3xl p-10 text-center cursor-pointer hover:scale-105 transition-transform border-4 border-white/30">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Bald_Eagle_Portrait.jpg/800px-Bald_Eagle_Portrait.jpg" 
-             class="mx-auto rounded-2xl shadow-2xl mb-6 w-64 h-64 object-cover">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/Uncle_Sam_(pointing_finger).jpg/800px-Uncle_Sam_(pointing_finger).jpg" 
-             class="mx-auto rounded-2xl shadow-2xl -mt-12 w-48 h-48 object-cover border-8 border-white">
-        <h1 class="text-6xl font-black mt-8 tracking-tighter">DEMOCRAT</h1>
-        <p class="text-2xl mt-2 opacity-80">Uncle Sam wants YOU to calculate your GPA 🇺🇸🦅</p>
+           class="bg-white/10 backdrop-blur-lg rounded-3xl p-12 text-center cursor-pointer hover:scale-105 transition-transform duration-300 border border-white/40 shadow-2xl">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Bald_Eagle_Portrait.jpg" 
+             alt="Bald Eagle" class="mx-auto rounded-2xl shadow-xl mb-10 w-72 h-72 object-cover border-4 border-white/50">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7f/Uncle_Sam_(pointing_finger).jpg" 
+             alt="Uncle Sam" class="mx-auto rounded-2xl shadow-xl -mt-20 w-60 h-60 object-cover border-8 border-white">
+        <h1 class="text-6xl font-extrabold mt-12 tracking-tight">DEMOCRAT</h1>
+        <p class="text-2xl mt-6 opacity-90">Calculate your academic performance</p>
       </div>
 
-      <!-- COMMUNIST -->
+      <!-- Communist -->
       <div onclick="chooseIdeology('communist')" 
-           class="bg-white/10 backdrop-blur-lg rounded-3xl p-10 text-center cursor-pointer hover:scale-105 transition-transform border-4 border-white/30">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Hammer_and_sickle_red_on_transparent.svg/800px-Hammer_and_sickle_red_on_transparent.svg.png" 
-             class="mx-auto rounded-2xl shadow-2xl mb-6 w-64 h-64 object-contain bg-white/20 p-8">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Vladimir_Lenin_(1918).jpg/800px-Vladimir_Lenin_(1918).jpg" 
-             class="mx-auto rounded-2xl shadow-2xl -mt-12 w-48 h-48 object-cover border-8 border-white">
-        <h1 class="text-6xl font-black mt-8 tracking-tighter">COMMUNIST</h1>
-        <p class="text-2xl mt-2 opacity-80">Comrade, the revolution needs your GPA 📕🔨</p>
+           class="bg-white/10 backdrop-blur-lg rounded-3xl p-12 text-center cursor-pointer hover:scale-105 transition-transform duration-300 border border-white/40 shadow-2xl">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Hammer_and_sickle_red_on_transparent.svg" 
+             alt="Hammer and Sickle" class="mx-auto rounded-2xl shadow-xl mb-10 w-72 h-72 object-contain bg-white/10 p-8">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Vladimir_Lenin_(1918).jpg" 
+             alt="Vladimir Lenin" class="mx-auto rounded-2xl shadow-xl -mt-20 w-60 h-60 object-cover border-8 border-white">
+        <h1 class="text-6xl font-extrabold mt-12 tracking-tight">COMMUNIST</h1>
+        <p class="text-2xl mt-6 opacity-90">Calculate your academic performance</p>
       </div>
     </div>
   </div>
 
-  <!-- CALCULATOR SCREEN -->
-  <div id="calculator" class="hidden min-h-screen p-8">
-    <div class="max-w-3xl mx-auto">
-      <!-- HEADER -->
-      <div class="flex items-center justify-between mb-10">
-        <div onclick="reset()" class="flex items-center gap-3 cursor-pointer">
+  <!-- Calculator Screen -->
+  <div id="calculator" class="hidden min-h-screen px-6 py-12">
+    <div class="max-w-4xl mx-auto">
+      <header class="flex items-center justify-between mb-16">
+        <div onclick="reset()" class="flex items-center gap-4 cursor-pointer hover:opacity-80 transition">
           <i class="fas fa-arrow-left text-3xl"></i>
-          <span class="text-2xl font-bold">Back to ideology</span>
-        </div>
-        
-        <div id="header" class="text-center">
-          <h1 id="title" class="text-6xl font-black tracking-tighter"></h1>
-          <p id="subtitle" class="text-2xl opacity-80"></p>
+          <span class="text-2xl font-semibold">Change Ideology</span>
         </div>
 
-        <button onclick="toggleMusic()" id="musicBtn"
-                class="anthem-btn bg-white/20 hover:bg-white/30 px-6 py-3 rounded-2xl flex items-center gap-3 text-xl font-bold">
-          <i class="fas fa-music"></i>
+        <div class="text-center">
+          <h1 id="title" class="text-6xl font-extrabold tracking-tight"></h1>
+          <p id="subtitle" class="text-2xl opacity-90 mt-3"></p>
+        </div>
+
+        <button onclick="toggleMusic()" class="bg-white/20 hover:bg-white/30 px-8 py-4 rounded-2xl flex items-center gap-4 text-xl font-semibold transition shadow-lg">
+          <i class="fas fa-music text-2xl"></i>
           <span id="musicLabel">Play Anthem</span>
         </button>
+      </header>
+
+      <!-- GPA Card -->
+      <div class="bg-black/40 backdrop-blur-xl rounded-3xl p-16 mb-16 text-center border border-white/20 shadow-2xl">
+        <p class="uppercase text-lg tracking-widest opacity-80 mb-6">Current GPA</p>
+        <div id="gpa" class="text-9xl font-black leading-none">0.00</div>
+        <p id="gpaText" class="text-3xl font-semibold mt-8 opacity-90"></p>
       </div>
 
-      <!-- GPA DISPLAY -->
-      <div class="bg-black/30 backdrop-blur-xl rounded-3xl p-10 mb-10 text-center">
-        <p class="uppercase text-sm tracking-widest opacity-70">Your Current</p>
-        <div id="gpa" class="text-[10rem] leading-none font-black text-white">0.00</div>
-        <p id="gpaText" class="text-3xl font-bold mt-2"></p>
-      </div>
+      <!-- Add Course Form -->
+      <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-12 mb-16 border border-white/20">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+          <input id="courseName" type="text" placeholder="Course name (e.g. Mathematics)" 
+                 class="md:col-span-5 bg-transparent border-b-2 border-white/60 focus:border-white text-xl py-4 outline-none placeholder-white/60">
 
-      <!-- ADD COURSE -->
-      <div class="bg-white/10 backdrop-blur-xl rounded-3xl p-8 mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-          <input id="courseName" type="text" placeholder="Course name (e.g. Math 101)" 
-                 class="md:col-span-5 bg-transparent border-b-2 border-white/50 focus:border-white text-xl py-3 outline-none">
-          
-          <select id="grade" class="md:col-span-3 bg-transparent border-b-2 border-white/50 text-xl py-3 outline-none">
-            <option value="4.0">A (4.0)</option>
-            <option value="3.7">A- (3.7)</option>
-            <option value="3.3">B+ (3.3)</option>
-            <option value="3.0">B (3.0)</option>
-            <option value="2.7">B- (2.7)</option>
-            <option value="2.3">C+ (2.3)</option>
-            <option value="2.0">C (2.0)</option>
-            <option value="1.7">C- (1.7)</option>
-            <option value="1.0">D (1.0)</option>
-            <option value="0.0">F (0.0)</option>
-          </select>
-          
-          <input id="credits" type="number" value="3" min="1" step="0.5" placeholder="Credits"
-                 class="md:col-span-2 bg-transparent border-b-2 border-white/50 text-xl py-3 outline-none">
-          
+          <input id="grade" type="number" step="0.1" min="0" max="20" placeholder="Exam grade" 
+                 class="md:col-span-2 bg-transparent border-b-2 border-white/60 focus:border-white text-xl py-4 outline-none text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+
+          <input id="td" type="number" step="0.1" min="0" max="20" placeholder="TD/CC" 
+                 class="md:col-span-2 bg-transparent border-b-2 border-white/60 focus:border-white text-xl py-4 outline-none text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+
+          <input id="credits" type="number" value="3" min="1" step="0.5" placeholder="Credits" 
+                 class="md:col-span-2 bg-transparent border-b-2 border-white/60 focus:border-white text-xl py-4 outline-none text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+
           <button onclick="addCourse()" 
-                  class="md:col-span-2 bg-white text-black font-bold text-xl py-3 rounded-2xl hover:bg-yellow-400 transition">
-            ADD
+                  class="md:col-span-1 bg-white text-black font-bold text-xl py-4 rounded-2xl hover:bg-gray-200 transition shadow-md">
+            Add
           </button>
         </div>
       </div>
 
-      <!-- COURSE LIST -->
-      <div id="courseList" class="space-y-4 mb-10"></div>
+      <!-- Course List -->
+      <div id="courseList" class="space-y-6 mb-16"></div>
 
-      <div class="text-center text-sm opacity-60">
-        Made with love (and a bit of ideology) by Grok • Public domain assets
-      </div>
+      <footer class="text-center text-sm opacity-70">
+        Public domain assets • Made with Grok
+      </footer>
     </div>
   </div>
 
-  <!-- AUDIO -->
+  <!-- Audio -->
   <audio id="anthem" loop></audio>
 
   <script>
@@ -123,18 +113,17 @@
       document.getElementById('selection').classList.add('hidden');
       document.getElementById('calculator').classList.remove('hidden');
       
-      const body = document.body;
-      body.classList.remove('democrat', 'communist');
-      body.classList.add(ideology);
+      document.body.classList.remove('democrat', 'communist');
+      document.body.classList.add(ideology);
       
       if (ideology === 'democrat') {
-        document.getElementById('title').innerHTML = 'LIBERTY GPA <span class="text-yellow-400">🦅</span>';
+        document.getElementById('title').textContent = 'LIBERTY GPA';
         document.getElementById('subtitle').textContent = 'Uncle Sam is proud of you';
-        document.getElementById('anthem').src = 'https://upload.wikimedia.org/wikipedia/commons/1/1f/%22The_Star-Spangled_Banner%22_performed_by_the_United_States_Navy_Band.mp3';
+        document.getElementById('anthem').src = 'https://upload.wikimedia.org/wikipedia/commons/6/65/Star_Spangled_Banner_instrumental.ogg';
       } else {
-        document.getElementById('title').innerHTML = 'PROLETARIAN GPA <span class="text-yellow-400">🔨</span>';
+        document.getElementById('title').textContent = 'PROLETARIAN GPA';
         document.getElementById('subtitle').textContent = 'Comrade, seize the means of calculation';
-        document.getElementById('anthem').src = 'https://upload.wikimedia.org/wikipedia/commons/b/ba/The_Internationale(English)(Lyrics).ogg';
+        document.getElementById('anthem').src = 'https://upload.wikimedia.org/wikipedia/commons/f/fa/The_Internationale_(1977_instrumental).ogg';
       }
       
       updateGPA();
@@ -142,15 +131,19 @@
 
     function addCourse() {
       const name = document.getElementById('courseName').value.trim() || 'Unnamed Course';
-      const grade = parseFloat(document.getElementById('grade').value);
-      const credits = parseFloat(document.getElementById('credits').value);
+      const grade = parseFloat(document.getElementById('grade').value) || 0;
+      const td = parseFloat(document.getElementById('td').value) || 0;
+      const credits = parseFloat(document.getElementById('credits').value) || 1;
       
-      courses.push({ name, grade, credits });
+      if (credits <= 0 || isNaN(credits)) return; // basic validation
+      
+      courses.push({ name, grade, td, credits });
       renderCourses();
       updateGPA();
       
-      // clear inputs
       document.getElementById('courseName').value = '';
+      document.getElementById('grade').value = '';
+      document.getElementById('td').value = '';
     }
 
     function removeCourse(index) {
@@ -165,13 +158,17 @@
       
       courses.forEach((course, i) => {
         const div = document.createElement('div');
-        div.className = 'bg-white/10 backdrop-blur-xl rounded-2xl p-6 flex justify-between items-center';
+        div.className = 'bg-white/10 backdrop-blur-xl rounded-2xl p-8 flex justify-between items-center border border-white/20';
         div.innerHTML = `
-          <div>
-            <div class="font-bold text-xl">${course.name}</div>
-            <div class="text-3xl font-black text-yellow-400">${course.grade} × ${course.credits}</div>
+          <div class="flex-1">
+            <div class="font-bold text-2xl mb-2">${course.name}</div>
+            <div class="text-xl opacity-90">
+              (${course.grade.toFixed(1)} × 0.6 + ${course.td.toFixed(1)} × 0.4) × ${course.credits}
+            </div>
           </div>
-          <button onclick="removeCourse(${i})" class="text-red-400 hover:text-red-500 text-4xl leading-none">×</button>
+          <button onclick="removeCourse(${i})" class="text-red-400 hover:text-red-300 text-5xl leading-none px-4">
+            ×
+          </button>
         `;
         container.appendChild(div);
       });
@@ -180,7 +177,7 @@
     function updateGPA() {
       if (courses.length === 0) {
         document.getElementById('gpa').textContent = '0.00';
-        document.getElementById('gpaText').textContent = currentIdeology === 'democrat' ? 'Be a patriot and add courses!' : 'Workers of the world, unite... and add courses!';
+        document.getElementById('gpaText').textContent = currentIdeology === 'democrat' ? 'Add courses to begin' : 'Add courses to begin';
         return;
       }
       
@@ -188,7 +185,8 @@
       let totalCredits = 0;
       
       courses.forEach(c => {
-        totalPoints += c.grade * c.credits;
+        const weighted = (c.grade * 0.6 + c.td * 0.4) * c.credits;
+        totalPoints += weighted;
         totalCredits += c.credits;
       });
       
@@ -197,33 +195,39 @@
       
       let message = '';
       if (currentIdeology === 'democrat') {
-        if (gpa >= 3.8) message = 'TRUE AMERICAN HERO 🦅🇺🇸';
-        else if (gpa >= 3.0) message = 'Land of the Free, Home of the B+';
-        else message = 'Better luck next term, patriot!';
+        if (gpa >= 12) message = 'Outstanding performance';
+        else if (gpa >= 10) message = 'Satisfactory performance';
+        else message = 'Needs improvement';
       } else {
-        if (gpa >= 3.8) message = 'EXEMPLARY COMRADE 🎖️';
-        else if (gpa >= 3.0) message = 'The people approve';
-        else message = 'Class struggle continues...';
+        if (gpa >= 12) message = 'Exemplary achievement';
+        else if (gpa >= 10) message = 'Acceptable achievement';
+        else message = 'Needs improvement';
       }
       document.getElementById('gpaText').textContent = message;
     }
 
     function toggleMusic() {
       const audio = document.getElementById('anthem');
+      const label = document.getElementById('musicLabel');
+
+      audio.onerror = function(e) {
+        console.error('Audio error:', audio.error);
+        alert('Failed to load anthem. Check console for details.');
+      };
+
       if (audio.paused) {
-        audio.play();
-        document.getElementById('musicLabel').textContent = 'Pause Anthem';
+        audio.play()
+          .then(() => { label.textContent = 'Pause Anthem'; })
+          .catch(err => { console.error('Play error:', err); });
       } else {
         audio.pause();
-        document.getElementById('musicLabel').textContent = 'Play Anthem';
+        label.textContent = 'Play Anthem';
       }
     }
 
     function reset() {
       location.reload();
     }
-
-    // Tailwind script already loaded
   </script>
 </body>
 </html>
