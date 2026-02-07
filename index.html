@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My First Web Page – From Flutter to Web</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 { color: #00d4ff; }
+    .card {
+      background: #1e1e1e;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 600px;
+      margin: 2rem auto;
+      box-shadow: 0 10px 30px rgba(0,212,255,0.1);
+    }
+    button {
+      background: #00d4ff;
+      color: black;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 999px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    button:hover { transform: scale(1.05); background: #00b8ff; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Yo from the web side</h1>
+    <p>Flutter survivor reporting in. Play Store tried to end me, but here I am.</p>
+    <button onclick="alert('Fuck yeah, first click! 🚀')">Click me</button>
+  </div>
+
+  <script>
+    console.log("If you see this → dev tools work. Nice.");
+  </script>
+</body>
+</html>
